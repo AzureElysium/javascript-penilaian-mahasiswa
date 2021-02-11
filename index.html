@@ -1,0 +1,195 @@
+<html>
+<head>
+	<title>UAS Bagian B</title>
+	<script type="text/javascript">
+		var data_nama_matkul=[];
+		var data_nilai_akhir=[];
+		var data_index=[];
+		var data_keterangan=[];
+		var i=0;
+
+		function fokus() {
+			document.form_mhs.nim.focus();
+		}
+
+		function tampil_nim() {
+			document.getElementById('tampil_nim').innerHTML=document.form_mhs.nim.value;
+		}
+
+		function klik_1(event) {
+			var x=event.which || event.keyCode;
+
+			if(x===13) {
+				document.form_mhs.matkul.focus();
+			}
+		}
+
+		function klik_2(event) {
+			var x=event.which || event.keyCode;
+
+			if(x===13) {
+				document.form_mhs.na.focus();
+			}
+		}
+
+		function klik_3(event) {
+			var x=event.which || event.keyCode;
+
+			if(x===13) {
+				document.form_mhs.klik.onclick();
+			}
+		}
+
+		function proses() {
+			var na=document.form_mhs.na.value;
+
+			if(na>100) {
+				alert('Nilai Melebihi Batas!');
+				document.form_mhs.na.focus();
+			} else if(na>79) {
+				document.form_mhs.index.value="A";
+				document.form_mhs.keterangan.value="Sangat Baik";
+			} else if(na>67) {
+				document.form_mhs.index.value="B";
+				document.form_mhs.keterangan.value="Baik";
+			} else if(na>19) {
+				document.form_mhs.index.value="C";
+				document.form_mhs.keterangan.value="Tidak Baik";
+			} else {
+				alert('Nilai Terlalu Rendah!');
+				document.form_mhs.na.focus();
+			}
+
+			document.form_mhs.save.focus();
+		}
+
+		function simpan() {
+			var nim=document.form_mhs.nim.value;
+			var nama_matkul=document.form_mhs.matkul.value;
+			var nilai_akhir=document.form_mhs.na.value;
+			var index=document.form_mhs.index.value;
+			var keterangan=document.form_mhs.keterangan.value;
+
+			if(nim=="" && nama_matkul=="" && nilai_akhir=="") {
+				alert('Isi Semuanya!');
+				document.form_mhs.nim.focus();
+				return false;
+			} else if(nim=="" && nama_matkul=="") {
+				alert('Isi NIM dan Nama Matkul!');
+				document.form_mhs.nim.focus();
+				return false;
+			} else if(nim=="" && nilai_akhir=="") {
+				alert('Isi NIM dan Nilai Akhir!');
+				document.form_mhs.nim.focus();
+				return false;
+			} else if(nama_matkul=="" && nilai_akhir=="") {
+				alert('Isi Nama Matkul dan Nilai Akhir');
+				document.form_mhs.matkul.focus();
+				return false;
+			} else if(index=="" && keterangan=="") {
+				alert('Isi atau Klik atau Enter pada Nilai Akhir!');
+				document.form_mhs.na.focus();
+				return false;
+			} else if(nim=="") {
+				alert('Isi NIM!');
+				document.form_mhs.nim.focus();
+				return false;
+			} else if(nama_matkul=="") {
+				alert('Isi Nama Matkul!');
+				document.form_mhs.matkul.focus();
+				return false;
+			} else if(nilai_akhir=="") {
+				alert('Isi Nilai Akhir');
+				document.form_mhs.na.focus();
+				return false;
+			}
+
+			data_nama_matkul[i]=document.form_mhs.matkul.value;
+			data_nilai_akhir[i]=document.form_mhs.na.value;
+			data_index[i]=document.form_mhs.index.value;
+			data_keterangan[i]=document.form_mhs.keterangan.value;
+
+			document.form_mhs.matkul.value="";
+			document.form_mhs.na.value="";
+			document.form_mhs.index.value="";
+			document.form_mhs.keterangan.value="";
+			i++;
+
+			alert('Data Telah Disimpan!');
+			document.form_mhs.matkul.focus();
+		}
+
+		function tampil() {
+			var isi="";
+			var no=1;
+			Total=data_nama_matkul.length;
+
+			for(var i=0; i<Total; i++) {
+				isi=isi + "<tr>" + "<td>" + no++ + "</td>" + "<td>" + data_nama_matkul[i] + "</td>" + "<td>" + data_nilai_akhir[i] + "</td>" + "<td>" + data_index[i] + "</td>" + "<td>" + data_keterangan[i] + "</td>" + "</tr>";
+			}
+
+			document.getElementById('tabel_output').innerHTML=isi;
+			document.form_mhs.matkul.focus();
+		}
+	</script>
+</head>
+<body bgcolor="khaki" onload="fokus()">
+	<form name="form_mhs">
+		<table cellpadding="6" cellspacing="0" border="4" align="center">
+			<tr>
+				<td colspan="3" style="text-align: center;"><marquee behavior="alternate" scrollamount="5"><b>Program Penilaian Mahasiswa</b></marquee></td>
+			</tr>
+			<tr>
+				<td>NIM :</td>
+				<td colspan="2"><input type="number" name="nim" onkeyup="tampil_nim()" onclick="tampil_nim()" onkeypress="klik_1(event)" required style="width: 100%;"></td>
+			</tr>
+			<tr>
+				<td>Nama Matkul :</td>
+				<td colspan="2"><input type="text" name="matkul" onkeypress="klik_2(event)" required style="width: 100%;"></td>
+			</tr>
+			<tr>
+				<td>Nilai Akhir :</td>
+				<td><input type="number" name="na" onkeypress="klik_3(event)" required></td>
+				<td><input type="button" name="klik" value="Klik" onclick="proses()"></td>
+			</tr>
+			<tr>
+				<td>Index :</td>
+				<td colspan="2"><input type="text" name="index" disabled style="width: 100%;"></td>
+			</tr>
+			<tr>
+				<td>Keterangan :</td>
+				<td colspan="2"><input type="text" name="keterangan" disabled style="width: 100%;"></td>
+			</tr>
+			<tr style="text-align: center;">
+				<td colspan="3">
+					<input type="button" name="save" value="Simpan" onclick="simpan()">
+					<input type="button" name="out" value="Tampilkan" onclick="tampil()">
+					<input type="reset" name="reset" value="Reset" onclick="fokus()">
+				</td>
+			</tr>
+		</table>
+
+		<br><br>
+
+		<center>
+			<h1>NIM : <span id="tampil_nim"></span></h1>
+		</center>
+
+		<table cellpadding="10" cellspacing="0" border="4" align="center">
+			<tr>
+				<td colspan="5"><marquee behavior="alternate" scrollamount="7"><b>Data Nilai</b></marquee></td>
+			</tr>
+			<tr>
+				<td>No.</td>
+				<td>Nama Matkul</td>
+				<td>Nilai Akhir</td>
+				<td>Index</td>
+				<td>Keterangan</td>
+			</tr>
+			<tbody id="tabel_output">
+				
+			</tbody>
+		</table>
+	</form>
+</body>
+</html>
